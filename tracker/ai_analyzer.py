@@ -29,21 +29,22 @@ SYSTEM_PROMPT = (
     "bullet-style list written as a single string."
 )
 
+# openrouter's free models share a pool with everyone else using them, so one
+# can get rate-limited (HTTP 429) at random times that have nothing to do
+# with our own usage. If the model set in .env fails, we retry once with this
+# backup before giving up - keeps the feature working without needing a paid
+# key. Kept as a plain constant instead of another .env setting since this is
+# just a safety net, not something that needs configuring per-deployment.
+BACKUP_MODEL = 'nvidia/nemotron-3-nano-30b-a3b:free'
 
-def analyze_job_description(job_description):
+
+def _call_openrouter(job_description, model):
     """
-    Sends the job description to the AI model and returns (result, error).
-
-    - result: a dict with the 5 fields, or None if something went wrong
-    - error: a short string explaining what went wrong, or None if it worked
-
-    Returning a tuple like this instead of raising an exception means the
-    view can just check "did error come back?" without a try/except of its
-    own for every possible failure.
+    Makes one request to OpenRouter with a specific model. Returns
+    (result, error) same as analyze_job_description - kept as its own
+    function so analyze_job_description can call it twice (primary model,
+    then backup model) without repeating all this code.
     """
-    if not settings.OPENROUTER_API_KEY:
-        return None, 'No OPENROUTER_API_KEY set in .env'
-
     headers = {
         'Authorization': f'Bearer {settings.OPENROUTER_API_KEY}',
         'Content-Type': 'application/json',
@@ -53,7 +54,7 @@ def analyze_job_description(job_description):
     # messages with roles. system = instructions for the model, user = the
     # actual thing we want it to work on
     payload = {
-        'model': settings.OPENROUTER_MODEL,
+        'model': model,
         'messages': [
             {'role': 'system', 'content': SYSTEM_PROMPT},
             {'role': 'user', 'content': job_description},
@@ -98,3 +99,37 @@ def analyze_job_description(job_description):
         'interview_prep': parsed.get('interview_prep', 'Not provided.'),
     }
     return result, None
+
+
+def analyze_job_description(job_description):
+    """
+    Sends the job description to the AI model and returns (result, error).
+
+    - result: a dict with the 5 fields, or None if something went wrong
+    - error: a short string explaining what went wrong, or None if it worked
+
+    Returning a tuple like this instead of raising an exception means the
+    view can just check "did error come back?" without a try/except of its
+    own for every possible failure.
+
+    Tries the model set in .env (OPENROUTER_MODEL) first. If that fails for
+    any reason, tries BACKUP_MODEL once before giving up - free models can
+    get temporarily rate-limited by OpenRouter's shared pool at random times,
+    unrelated to anything this app is doing.
+    """
+    if not settings.OPENROUTER_API_KEY:
+        return None, 'No OPENROUTER_API_KEY set in .env'
+
+    result, error = _call_openrouter(job_description, settings.OPENROUTER_MODEL)
+    if result is not None:
+        return result, None
+
+    # first attempt failed - try the backup model, but only if it's actually
+    # different from what we just tried (no point retrying the same thing)
+    if settings.OPENROUTER_MODEL != BACKUP_MODEL:
+        backup_result, backup_error = _call_openrouter(job_description, BACKUP_MODEL)
+        if backup_result is not None:
+            return backup_result, None
+        error = f'{error} (backup model also failed: {backup_error})'
+
+    return None, error

@@ -178,6 +178,13 @@ practice generally.
    [openrouter.ai/models](https://openrouter.ai/models) and filter for
    `:free` if this one stops working, then update the line in `.env`. No
    code changes needed to switch models.
+5. **Built-in fallback:** free models on OpenRouter share a request pool
+   with everyone else using them, so they can occasionally return a
+   temporary rate-limit error that has nothing to do with your own usage.
+   If the model set in `.env` fails, `tracker/ai_analyzer.py` automatically
+   retries once with a second free model
+   (`nvidia/nemotron-3-nano-30b-a3b:free`) before giving up - so a single
+   rate-limited request usually doesn't stop the feature from working.
 
 **How the app reads it:** `jobtracker/settings.py` uses `python-decouple`'s
 `config()` function to read `OPENROUTER_API_KEY` and `OPENROUTER_MODEL` out
@@ -222,6 +229,12 @@ key, the analyzer view shows an error message instead of crashing.
 8. **Save the result.** Back in `views.py`, the parsed dict is saved via
    `JobAnalysis.objects.update_or_create(...)` - so re-running the analysis
    updates the existing row instead of creating duplicates.
+9. **Fallback on failure.** `analyze_job_description()` wraps the actual API
+   call (now a separate helper, `_call_openrouter()`) so it can call it
+   twice: once with whatever model is set in `.env`, and if that fails for
+   any reason (rate limit, bad response, timeout), once more with a fixed
+   backup free model. Only if both attempts fail does the view show an
+   error message.
 
 ## Notes / Assumptions
 
