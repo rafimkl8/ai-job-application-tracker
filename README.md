@@ -1,4 +1,4 @@
-# AI-Powered Job Application Tracker
+# JobTrack AI — AI-Powered Job Application Tracker
 
 A Django app for tracking job applications - add jobs, move them through a
 status pipeline (Wishlist → Applied → Screening → Interview → Selected /
