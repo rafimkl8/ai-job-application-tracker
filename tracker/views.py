@@ -227,6 +227,17 @@ def analyze_job(request, pk):
             },
         )
         messages.success(request, 'Job description analyzed.')
-        return redirect('application_detail', pk=application.pk)
+        # send them to the dedicated analysis page, not back to the detail
+        # page - the assignment lists "AI Analysis" as its own page
+        return redirect('analysis_detail', pk=application.pk)
 
     return render(request, 'tracker/analyze_confirm.html', {'application': application})
+
+
+@login_required
+def analysis_detail(request, pk):
+    # the dedicated "AI Analysis" page - shows the saved result (if any) and
+    # a button to run/re-run it. Kept separate from application_detail so
+    # there's one clear page to point at for this feature.
+    application = get_object_or_404(JobApplication, pk=pk, user=request.user)
+    return render(request, 'tracker/analysis_detail.html', {'application': application})

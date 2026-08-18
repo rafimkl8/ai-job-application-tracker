@@ -20,6 +20,7 @@ urlpatterns = [
     # interviews (tied to an application)
     path('applications/<int:application_pk>/interviews/new/', views.interview_create, name='interview_create'),
 
-    # AI analyzer
+    # AI analyzer - one page to trigger it, one page to view the result
     path('applications/<int:pk>/analyze/', views.analyze_job, name='analyze_job'),
+    path('applications/<int:pk>/analysis/', views.analysis_detail, name='analysis_detail'),
 ]

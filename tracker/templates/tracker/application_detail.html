@@ -37,29 +37,14 @@
             <a href="{% url 'application_delete' application.pk %}" class="btn btn-danger">Delete</a>
         </div>
 
-        <!-- AI Job Description Analyzer section -->
+        <!-- AI Job Description Analyzer - just a link to its own page here,
+             the full result view lives on the dedicated AI Analysis page -->
         <div class="card mb-3">
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="card-body d-flex justify-content-between align-items-center">
                 <span>AI Job Description Analysis</span>
-                <a href="{% url 'analyze_job' application.pk %}" class="btn btn-sm btn-outline-primary">
-                    {% if application.analysis %}Re-analyze{% else %}Analyze with AI{% endif %}
+                <a href="{% url 'analysis_detail' application.pk %}" class="btn btn-sm btn-primary">
+                    {% if application.analysis %}View Analysis{% else %}Analyze with AI{% endif %}
                 </a>
-            </div>
-            <div class="card-body">
-                {% if application.analysis %}
-                    <h6>Job Summary</h6>
-                    <p style="white-space: pre-wrap;">{{ application.analysis.summary }}</p>
-                    <h6>Required Skills</h6>
-                    <p style="white-space: pre-wrap;">{{ application.analysis.required_skills }}</p>
-                    <h6>Required Experience</h6>
-                    <p style="white-space: pre-wrap;">{{ application.analysis.required_experience }}</p>
-                    <h6>Important Technologies</h6>
-                    <p style="white-space: pre-wrap;">{{ application.analysis.important_technologies }}</p>
-                    <h6>Interview Preparation Suggestions</h6>
-                    <p style="white-space: pre-wrap;">{{ application.analysis.interview_prep }}</p>
-                {% else %}
-                    <p class="text-muted mb-0">No analysis yet. Click "Analyze with AI" above (needs a job description filled in).</p>
-                {% endif %}
             </div>
         </div>
     </div>

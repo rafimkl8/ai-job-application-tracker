@@ -48,6 +48,13 @@ ai-job-application-tracker/
 │   ├── admin.py
 │   ├── management/commands/seed_data.py   # seeds demo data
 │   └── templates/tracker/
+│       ├── dashboard.html            # required page: Dashboard
+│       ├── application_list.html     # required page: Application List
+│       ├── application_detail.html   # required page: Application Details
+│       ├── application_form.html     # required page: Create/Edit Application
+│       ├── analysis_detail.html      # required page: AI Analysis
+│       ├── login.html / register.html
+│       ├── interview_form.html, analyze_confirm.html, application_confirm_delete.html
 ├── manage.py
 ├── requirements.txt
 ├── .env.example         # copy to .env and fill in your own key
@@ -121,6 +128,24 @@ ai-job-application-tracker/
 python manage.py createsuperuser
 ```
 then visit `http://127.0.0.1:8000/admin/`.
+
+## Pages
+
+| Page | URL |
+|---|---|
+| Registration | `/register/` |
+| Login | `/login/` |
+| Dashboard | `/` |
+| Application List (search/filter) | `/applications/` |
+| Application Details | `/applications/<id>/` |
+| Create Application | `/applications/new/` |
+| Edit Application | `/applications/<id>/edit/` |
+| **AI Analysis** | `/applications/<id>/analysis/` |
+
+The "Analyze with AI" button on an application's detail page takes you to
+`/applications/<id>/analyze/` (a confirm step showing the job description
+about to be sent), which then redirects to the dedicated AI Analysis page
+above once the result is ready.
 
 ## Setting up the API key (.env)
 
