@@ -97,7 +97,8 @@ ai-job-application-tracker/
    anything**, the AI feature won't work without it, but everything else
    will run fine even with a blank key):
    ```
-   cp .env.example .env
+   cp .env.example .env          # Mac/Linux/Git Bash/PowerShell
+   copy .env.example .env        # Windows Command Prompt (cmd.exe) - cp doesn't exist there
    ```
    Then open `.env` and fill in your own `OPENROUTER_API_KEY`.
 
@@ -157,10 +158,15 @@ practice generally.
 1. Sign up at [openrouter.ai](https://openrouter.ai) and generate a key at
    [openrouter.ai/keys](https://openrouter.ai/keys).
 2. Copy `.env.example` to `.env` (this file is in `.gitignore`, so it never
-   gets pushed):
+   gets pushed). The command differs by terminal:
    ```
-   cp .env.example .env
+   cp .env.example .env          # Mac/Linux/Git Bash/PowerShell
+   copy .env.example .env        # Windows Command Prompt (cmd.exe)
    ```
+   `cp` is a Mac/Linux command and doesn't exist in plain Windows Command
+   Prompt - that's the most common reason this step "doesn't work." If
+   neither command runs, just duplicate `.env.example` in your file manager
+   and rename the copy to `.env`.
 3. Open `.env` and paste your key in:
    ```
    OPENROUTER_API_KEY=sk-or-v1-your-actual-key-here
