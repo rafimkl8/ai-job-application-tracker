@@ -51,20 +51,26 @@ Built for the Module 20 assignment.
 
 ```
 ai-job-application-tracker/
-├── jobtracker/          # Django project settings/urls
-├── tracker/             # the app
-│   ├── models.py        # Category, Tag, JobApplication, Interview, JobAnalysis
-│   ├── views.py         # all views (function-based)
-│   ├── forms.py         # register form, application form, interview form
-│   ├── ai_analyzer.py   # the OpenRouter API call + response parsing
+├── jobtracker/                  # Django project settings/urls
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py / asgi.py
+├── tracker/                     # the app
+│   ├── models.py                # Category, Tag, JobApplication, Interview, JobAnalysis
+│   ├── views.py                 # all views (function-based)
+│   ├── forms.py                 # register form, application form, interview form
+│   ├── ai_analyzer.py           # the OpenRouter API call + response parsing
 │   ├── urls.py
 │   ├── admin.py
+│   ├── migrations/
 │   ├── management/commands/seed_data.py   # seeds demo data
-│   └── templates/tracker/
+│   └── templates/tracker/       # all page templates (dashboard, forms, etc.)
+├── screenshots/                 # 14 UI screenshots, referenced below
 ├── manage.py
 ├── requirements.txt
-├── .env.example          # copy to .env and fill in your own key
-└── db.sqlite3            # created after running migrate
+├── .gitignore
+├── .env.example                 # copy to .env and fill in your own key
+└── db.sqlite3                   # created after running migrate (not in the repo)
 ```
 
 ## Models
