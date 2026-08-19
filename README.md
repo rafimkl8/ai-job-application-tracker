@@ -183,16 +183,18 @@ instead of crashing — every other feature works normally without it.
 2. **Login**
    ![Login](screenshots/02-login.png)
 
-3. **Dashboard**
+3. **Dashboard** — total applications, applications by status, recent
+   applications, upcoming interviews
    ![Dashboard](screenshots/03-dashboard.png)
 
 4. **Application List**
    ![Application List](screenshots/04-application-list.png)
 
-5. **Search & Filter**
+5. **Search & Filter** — filtered by category
    ![Search and Filter](screenshots/05-search-filter.png)
 
-6. **Application Details**
+6. **Application Details** — fields, category, tags, linked interview, and
+   the AI analysis entry point
    ![Application Details](screenshots/06-application-detail.png)
 
 7. **Create Application**
@@ -201,14 +203,24 @@ instead of crashing — every other feature works normally without it.
 8. **Edit Application**
    ![Edit Application](screenshots/08-edit-application.png)
 
-9. **Add Interview**
-   ![Add Interview](screenshots/09-interview-form.png)
+9. **Application Updated** — after editing, showing the new status
+   ![Application Updated](screenshots/09-application-updated-after-editing.png)
 
-10. **AI Analysis — Confirm**
-    ![AI Analysis Confirm](screenshots/10-ai-analyze-confirm.png)
+10. **Add Interview**
+    ![Add Interview](screenshots/10-interview-form.png)
 
-11. **AI Analysis — Result**
-    ![AI Analysis Result](screenshots/11-ai-analysis-result.png)
+11. **AI Analysis — before running** — empty state when no analysis exists yet
+    ![AI Analysis Before](screenshots/11-ai-analyze-before-description.png)
+
+12. **AI Analysis — confirm** — the job description about to be sent to the AI
+    ![AI Analysis Confirm](screenshots/12-ai-analyze-confirm.png)
+
+13. **AI Analysis — result** — Job Summary, Required Skills, Required
+    Experience, Important Technologies, Interview Preparation Suggestions
+    ![AI Analysis Result](screenshots/13-ai-analysis-result.png)
+
+14. **Django Admin** — all 5 models registered for direct inspection
+    ![Django Admin](screenshots/14-admin-panel.png)
 
 ## Notes / Design Decisions
 
