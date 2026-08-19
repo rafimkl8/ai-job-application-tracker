@@ -86,7 +86,7 @@ ai-job-application-tracker/
 
 1. Clone the repo and go into it:
    ```
-   git clone https://github.com/rafimkl8/ai-job-application-tracker.git
+   git clone <your-repo-url>
    cd ai-job-application-tracker
    ```
 
