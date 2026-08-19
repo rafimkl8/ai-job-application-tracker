@@ -45,7 +45,14 @@ class JobApplicationForm(forms.ModelForm):
             'job_description': forms.Textarea(attrs={'class': 'form-control', 'rows': 6}),
             'location': forms.TextInput(attrs={'class': 'form-control'}),
             'salary': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. 60k-80k BDT'}),
-            'job_url': forms.URLInput(attrs={'class': 'form-control'}),
+            # using TextInput instead of URLInput on purpose - a browser's
+            # built-in type="url" input refuses to submit a bare domain like
+            # "www.example.com" (it demands a scheme, http:// or https://,
+            # before you even hit submit). Django's URLField is more lenient
+            # server-side and auto-adds http:// if it's missing, so plain
+            # text here + real validation in the model field is the actual
+            # fix, not a workaround.
+            'job_url': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. www.company.com/careers/123'}),
             'application_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'status': forms.Select(attrs={'class': 'form-select'}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
@@ -62,7 +69,10 @@ class InterviewForm(forms.ModelForm):
         widgets = {
             'interview_datetime': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
             'interview_type': forms.Select(attrs={'class': 'form-select'}),
-            'meeting_link': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'https://...'}),
+            # same reasoning as job_url above - TextInput, not URLInput, so a
+            # bare domain/link doesn't get blocked by the browser before the
+            # form even submits
+            'meeting_link': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. meet.google.com/abc-defg-hij'}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
 

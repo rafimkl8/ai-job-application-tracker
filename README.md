@@ -249,6 +249,14 @@ key, the analyzer view shows an error message instead of crashing.
   sense to add a job to "Wishlist" before actually applying.
 - Search matches job title OR company name (`icontains`, case-insensitive)
   using Django's `Q` objects to OR the two conditions in a single query.
+- `job_url` and `meeting_link` use a plain `TextInput` widget instead of
+  Django's `URLInput`. `<input type="url">` triggers the browser's own
+  built-in validation, which refuses to submit a bare domain like
+  `www.example.com` - it insists on a full scheme (`http://` or `https://`)
+  before the form is even sent. Django's `URLField` is more forgiving on
+  the server side and auto-prepends `http://` if it's missing, so a plain
+  text box + the model's own validation is the actual fix, not the
+  browser's stricter (and here, unhelpful) HTML5 validation.
 - The AI analysis result is cached in the `JobAnalysis` model instead of
   being re-fetched from the API on every page load - saves API calls and
   means the page still shows the last analysis even if the API is down.
